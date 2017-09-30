@@ -34,14 +34,20 @@ class KeywordSampleManager {
     $files = $this->checkoutDir();
     if (!empty($files)) {
       $samples = [];
+      $filenames = [];
       foreach ($files as $file) {
         $content = file_get_contents($this->baseDir . $file);
         if ($content) {
           array_push($samples, $content);
+          array_push($filenames, $file);
         }
       }
-      if (!empty($samples)) {
-        return $this->buildResponse(true, $samples, 200, 'OK');
+      if (!empty($samples) && !empty($filenames)) {
+        $payload = [
+          'samples' => $samples,
+          'filenames' => $filenames
+        ];
+        return $this->buildResponse(true, $payload, 200, 'OK');
       } else {
         return $this->buildResponse(false, false, 500, 'Failed');
       }

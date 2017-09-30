@@ -107,6 +107,13 @@ function initKSUtils(_KS) {
         var result = JSON.parse(data);
         if (result.success) {
           if (result.error.code == 200) {
+            var payload = result.payload.samples;
+            var filenames = result.payload.filenames;
+            $(payload).each(function(i, el) {
+              var buf = JSON.parse(el);
+              var fn = filenames[i];
+              var sampleId = _KS.addAudioSample(buf) - 1;
+            });
             $(document).trigger('response_speak', 'Próbki audio załadowane.');
           } else if (result.error.code == 204) {
             $(document).trigger('response_speak', 'Brak próbek audio.');
