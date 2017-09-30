@@ -9,9 +9,13 @@ class KeywordSampleManager {
 
   public function save($name, $buffer) {
     $date = date('Y-m-d-G-i-s-');
-    $result = file_put_contents($this->baseDir . $date . $name . '.json', $buffer);
+    $fullName = $date . $name;
+    $result = file_put_contents($this->baseDir . $fullName . '.json', $buffer);
     if ($result) {
-      return $this->buildResponse(true, false, 0, 'OK');
+      $payload = [
+        'filename' => $fullName
+      ];
+      return $this->buildResponse(true, $payload, 0, 'OK');
     } else {
       return $this->buildResponse(false, false, 500, 'Failed');
     }
