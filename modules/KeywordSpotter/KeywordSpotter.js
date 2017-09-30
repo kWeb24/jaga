@@ -76,3 +76,8 @@ KeywordSpotter.prototype.setCallback = function(obj) {
 KeywordSpotter.prototype.getAudioBuffer = function(id) {
   return this.SR.recordingBufferArray[id];
 };
+
+KeywordSpotter.prototype.addAudioSample = function(buf) {
+  this.SR.recordingBufferArray.push(buf);
+  return this.SR.recordingBufferArray.length;
+};
