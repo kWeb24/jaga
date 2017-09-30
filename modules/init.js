@@ -139,6 +139,7 @@ function initKSUtils(_KS) {
 
       $('#' + saveButtonId).on('click', function(e) {
         e.preventDefault();
+        var btn = $(this);
         var buffer = _KS.getAudioBuffer(sampleId);
         var name = "sample_" + word + "_" + sampleId;
         var json = JSON.stringify(buffer);
@@ -153,8 +154,11 @@ function initKSUtils(_KS) {
               var result = JSON.parse(data);
               if (result.success) {
                 $(document).trigger('response_speak', 'Próbka audio zapisana.');
+                $(btn).closest('.sample').addClass('saved');
+                $(btn).closest('.sample').attr('data-filename', result.payload.filename);
               } else {
-                $(document).trigger('response_speak', 'Próbka audio zapisana.');     
+                $(document).trigger('response_speak', 'Próbka audio zapisana.');
+                $(btn).closest('.sample').addClass('error');
               }
             },
             error: function (e) {
