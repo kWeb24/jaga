@@ -137,6 +137,36 @@ function initKSUtils(_KS) {
         $('#' + sampleDivId).remove();
       });
 
+      $('#' + saveButtonId).on('click', function(e) {
+        e.preventDefault();
+        var buffer = _KS.getAudioBuffer(sampleId);
+        var name = "sample_" + word + "_" + sampleId;
+        var json = JSON.stringify(buffer);
+        $.ajax({
+            type: 'POST',
+            url: 'modules/KeywordSampleManager/saveSample.php',
+            data: {
+              'name': name,
+              'buffer': json
+            },
+            success: function (data) {
+              var result = JSON.parse(data);
+              if (result.success) {
+                $(document).trigger('response_speak', 'Próbka audio zapisana.');
+              } else {
+                $(document).trigger('response_speak', 'Próbka audio zapisana.');     
+              }
+            },
+            error: function (e) {
+              $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
+            }
+        });
+      });
+
+      $('#' + removeButtonId).on('click', function(e) {
+        e.preventDefault();
+      });
+
       _KS.generateModel();
     }
   });

@@ -1,12 +1,20 @@
 <?php
 
 class KeywordSampleManager {
-  public function __construct() {
+  private $baseDir;
 
+  public function __construct() {
+    $this->baseDir = '../../assets/audio/keywordSamples/';
   }
 
-  public function save() {
-
+  public function save($name, $buffer) {
+    $date = date('Y-m-d-G-i-s-');
+    $result = file_put_contents($this->baseDir . $date . $name . '.json', $buffer);
+    if ($result) {
+      return $this->buildResponse(true, false, 0, 'OK');
+    } else {
+      return $this->buildResponse(false, false, 500, 'Failed');
+    }
   }
 
   public function delete() {
@@ -23,6 +31,25 @@ class KeywordSampleManager {
 
   public function checkoutDir() {
 
+  }
+
+  public function buildResponse($success, $payload, $error, $msg) {
+    if (!$payload) {
+      $pl = ['Empty' => true];
+    } else {
+      $pl = $payload;
+    }
+
+    $response = [
+      'success' => $success,
+      'payload'=> $pl,
+      'error' => [
+        'code' => $error,
+        'message' => $msg
+      ]
+    ];
+
+    return json_encode($response);
   }
 }
 
