@@ -21,8 +21,13 @@ class KeywordSampleManager {
     }
   }
 
-  public function delete() {
-
+  public function delete($name) {
+    $result = unlink($this->baseDir . $name . '.json');
+    if ($result) {
+      return $this->buildResponse(true, null, 0, 'OK');
+    } else {
+      return $this->buildResponse(false, false, 500, 'Failed');
+    }
   }
 
   public function load() {

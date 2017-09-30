@@ -154,21 +154,50 @@ function initKSUtils(_KS) {
               var result = JSON.parse(data);
               if (result.success) {
                 $(document).trigger('response_speak', 'Próbka audio zapisana.');
+                $(btn).closest('.sample').removeClass('error');
+                $(btn).closest('.sample').removeClass('deleted');
                 $(btn).closest('.sample').addClass('saved');
                 $(btn).closest('.sample').attr('data-filename', result.payload.filename);
               } else {
-                $(document).trigger('response_speak', 'Próbka audio zapisana.');
+                $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
                 $(btn).closest('.sample').addClass('error');
               }
             },
             error: function (e) {
               $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
+              $(btn).closest('.sample').addClass('error');
             }
         });
       });
 
       $('#' + removeButtonId).on('click', function(e) {
         e.preventDefault();
+        var btn = $(this);
+        var name = $(btn).closest('.sample').attr('data-filename');
+        $.ajax({
+            type: 'POST',
+            url: 'modules/KeywordSampleManager/deleteSample.php',
+            data: {
+              'name': name
+            },
+            success: function (data) {
+              var result = JSON.parse(data);
+              if (result.success) {
+                $(document).trigger('response_speak', 'Próbka audio usunięta.');
+                $(btn).closest('.sample').removeClass('saved');
+                $(btn).closest('.sample').removeClass('error');
+                $(btn).closest('.sample').addClass('deleted');
+                $(btn).closest('.sample').attr('data-filename', '');
+              } else {
+                $(document).trigger('response_speak', 'Błąd usuwania próbki audio.');
+                $(btn).closest('.sample').addClass('error');
+              }
+            },
+            error: function (e) {
+              $(document).trigger('response_speak', 'Błąd usuwania próbki audio.');
+              $(btn).closest('.sample').addClass('error');
+            }
+        });
       });
 
       _KS.generateModel();
