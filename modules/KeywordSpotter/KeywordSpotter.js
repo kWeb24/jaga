@@ -72,3 +72,7 @@ KeywordSpotter.prototype.setKeywordSpottingMinConfidence = function(val) {
 KeywordSpotter.prototype.setCallback = function(obj) {
   this.SR.keywordSpottedCallback = obj;
 };
+
+KeywordSpotter.prototype.getAudioBuffer = function(id) {
+  return this.SR.recordingBufferArray[id];
+};
