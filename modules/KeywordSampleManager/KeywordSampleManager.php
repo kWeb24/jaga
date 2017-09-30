@@ -15,7 +15,7 @@ class KeywordSampleManager {
       $payload = [
         'filename' => $fullName
       ];
-      return $this->buildResponse(true, $payload, 0, 'OK');
+      return $this->buildResponse(true, $payload, 200, 'OK');
     } else {
       return $this->buildResponse(false, false, 500, 'Failed');
     }
@@ -24,14 +24,30 @@ class KeywordSampleManager {
   public function delete($name) {
     $result = unlink($this->baseDir . $name . '.json');
     if ($result) {
-      return $this->buildResponse(true, null, 0, 'OK');
+      return $this->buildResponse(true, null, 200, 'OK');
     } else {
       return $this->buildResponse(false, false, 500, 'Failed');
     }
   }
 
   public function load() {
-
+    $files = $this->checkoutDir();
+    if (!empty($files)) {
+      $samples = [];
+      foreach ($files as $file) {
+        $content = file_get_contents($this->baseDir . $file);
+        if ($content) {
+          array_push($samples, $content);
+        }
+      }
+      if (!empty($samples)) {
+        return $this->buildResponse(true, $samples, 200, 'OK');
+      } else {
+        return $this->buildResponse(false, false, 500, 'Failed');
+      }
+    } else {
+      return $this->buildResponse(true, null, 204, 'Empty');
+    }
   }
 
   public function checkoutSample() {
@@ -39,7 +55,15 @@ class KeywordSampleManager {
   }
 
   public function checkoutDir() {
-
+    $dirContent = scandir($this->baseDir);
+    $finalArray = [];
+    foreach ($dirContent as $fileName) {
+      $path = pathinfo($fileName);
+      if ($path['extension'] == 'json') {
+        array_push($finalArray, $fileName);
+      }
+    }
+    return $finalArray;
   }
 
   public function buildResponse($success, $payload, $error, $msg) {

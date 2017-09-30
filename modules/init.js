@@ -99,6 +99,27 @@ function requestCleverbot(input) {
 
 function initKSUtils(_KS) {
   _KS.listen();
+
+  $.ajax({
+      type: 'GET',
+      url: 'modules/KeywordSampleManager/loadSamples.php',
+      success: function (data) {
+        var result = JSON.parse(data);
+        if (result.success) {
+          if (result.error.code == 200) {
+            $(document).trigger('response_speak', 'Próbki audio załadowane.');
+          } else if (result.error.code == 204) {
+            $(document).trigger('response_speak', 'Brak próbek audio.');
+          }
+        } else {
+          $(document).trigger('response_speak', 'Błąd ładowania próbek audio.');
+        }
+      },
+      error: function (e) {
+        $(document).trigger('response_speak', 'Błąd ładowania próbek audio.');
+      }
+  });
+
   $("#toggleTraining").on('click', function(e) {
     e.preventDefault();
     var btn = $(this);
