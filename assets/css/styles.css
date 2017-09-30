@@ -388,11 +388,16 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   float: right;
 }
 
-.sidebar-left .training-layer .training-samples .sample a.fa-play {
-  font-size: 8px;
+.sidebar-left .training-layer .training-samples .sample a {
   margin-right: 5px;
+  font-size: 10px;
 }
 
-.sidebar-left .training-layer .training-samples .sample a.fa-times {
-  font-size: 8px;
+.sidebar-left .training-layer .training-samples .sample a.fa-floppy-o {
+  color: #2ecc71;
+}
+
+.sidebar-left .training-layer .training-samples .sample a.fa-chain-broken {
+  color: #e74c3c;
+  margin-right: 0;
 }

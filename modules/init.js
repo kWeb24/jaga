@@ -115,10 +115,12 @@ function initKSUtils(_KS) {
       var sampleDivId = "sample-" + sampleId;
       var playButtonId = "play-sample-" + sampleId;
       var deleteButtonId = "delete-sample-" + sampleId;
+      var saveButtonId = "save-sample-" + sampleId;
+      var removeButtonId = "remove-sample-" + sampleId;
 
       var resultEl = '<div class="sample" id="' + sampleDivId + '">';
           resultEl += 'Sample #' + sampleId + ' ' + word;
-          resultEl += '<span><a id="' + playButtonId + '" href="#" class="fa fa-play"></a> <a id="' + deleteButtonId + '" href="#" class="fa fa-times"></a></span>';
+          resultEl += '<span><a id="' + playButtonId + '" href="#" class="fa fa-play"></a> <a id="' + deleteButtonId + '" href="#" class="fa fa-times"></a> <a id="' + saveButtonId + '" href="#" class="fa fa-floppy-o"></a> <a id="' + removeButtonId + '" href="#" class="fa fa-chain-broken"></a></span>';
           resultEl += '</div>';
 
       $("#training-samples").append(resultEl);
