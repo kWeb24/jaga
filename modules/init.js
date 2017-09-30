@@ -111,8 +111,11 @@ function initKSUtils(_KS) {
             var filenames = result.payload.filenames;
             $(payload).each(function(i, el) {
               var buf = JSON.parse(el);
-              var fn = filenames[i];
-              var sampleId = _KS.addAudioSample(buf) - 1;
+              var fn = filenames[i].split('.')[0];
+              var word = fn.split("_");
+              var sampleId = _KS.addAudioSample(buf, word[1]) - 1;
+              addSampleItem(_KS, sampleId, word[1], true, fn);
+              _KS.generateModel();
             });
             $(document).trigger('response_speak', 'Próbki audio załadowane.');
           } else if (result.error.code == 204) {
@@ -140,93 +143,7 @@ function initKSUtils(_KS) {
       $(btn).removeClass('active');
       $("#toggleTesting").removeAttr('disabled');
 
-      var sampleDivId = "sample-" + sampleId;
-      var playButtonId = "play-sample-" + sampleId;
-      var deleteButtonId = "delete-sample-" + sampleId;
-      var saveButtonId = "save-sample-" + sampleId;
-      var removeButtonId = "remove-sample-" + sampleId;
-
-      var resultEl = '<div class="sample" id="' + sampleDivId + '">';
-          resultEl += 'Sample #' + sampleId + ' ' + word;
-          resultEl += '<span><a id="' + playButtonId + '" href="#" class="fa fa-play"></a> <a id="' + deleteButtonId + '" href="#" class="fa fa-times"></a> <a id="' + saveButtonId + '" href="#" class="fa fa-floppy-o"></a> <a id="' + removeButtonId + '" href="#" class="fa fa-chain-broken"></a></span>';
-          resultEl += '</div>';
-
-      $("#training-samples").append(resultEl);
-
-      $('#' + playButtonId).on('click', function(e) {
-        e.preventDefault();
-        _KS.playTrainingBuffer(sampleId);
-      });
-
-      $('#' + deleteButtonId).on('click', function(e) {
-        e.preventDefault();
-        _KS.deleteTrainingBuffer(sampleId);
-        _KS.generateModel();
-        $('#' + sampleDivId).remove();
-      });
-
-      $('#' + saveButtonId).on('click', function(e) {
-        e.preventDefault();
-        var btn = $(this);
-        var buffer = _KS.getAudioBuffer(sampleId);
-        var name = "sample_" + word + "_" + sampleId;
-        var json = JSON.stringify(buffer);
-        $.ajax({
-            type: 'POST',
-            url: 'modules/KeywordSampleManager/saveSample.php',
-            data: {
-              'name': name,
-              'buffer': json
-            },
-            success: function (data) {
-              var result = JSON.parse(data);
-              if (result.success) {
-                $(document).trigger('response_speak', 'Próbka audio zapisana.');
-                $(btn).closest('.sample').removeClass('error');
-                $(btn).closest('.sample').removeClass('deleted');
-                $(btn).closest('.sample').addClass('saved');
-                $(btn).closest('.sample').attr('data-filename', result.payload.filename);
-              } else {
-                $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
-                $(btn).closest('.sample').addClass('error');
-              }
-            },
-            error: function (e) {
-              $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
-              $(btn).closest('.sample').addClass('error');
-            }
-        });
-      });
-
-      $('#' + removeButtonId).on('click', function(e) {
-        e.preventDefault();
-        var btn = $(this);
-        var name = $(btn).closest('.sample').attr('data-filename');
-        $.ajax({
-            type: 'POST',
-            url: 'modules/KeywordSampleManager/deleteSample.php',
-            data: {
-              'name': name
-            },
-            success: function (data) {
-              var result = JSON.parse(data);
-              if (result.success) {
-                $(document).trigger('response_speak', 'Próbka audio usunięta.');
-                $(btn).closest('.sample').removeClass('saved');
-                $(btn).closest('.sample').removeClass('error');
-                $(btn).closest('.sample').addClass('deleted');
-                $(btn).closest('.sample').attr('data-filename', '');
-              } else {
-                $(document).trigger('response_speak', 'Błąd usuwania próbki audio.');
-                $(btn).closest('.sample').addClass('error');
-              }
-            },
-            error: function (e) {
-              $(document).trigger('response_speak', 'Błąd usuwania próbki audio.');
-              $(btn).closest('.sample').addClass('error');
-            }
-        });
-      });
+      addSampleItem(_KS, sampleId, word, false, null);
 
       _KS.generateModel();
     }
@@ -258,4 +175,100 @@ function initKSUtils(_KS) {
   };
 
   _KS.setCallback(updateKeywordSpotting);
+}
+
+function addSampleItem(_KS, sampleId, word, isLoaded, fn) {
+  var sampleDivId = "sample-" + sampleId;
+  var playButtonId = "play-sample-" + sampleId;
+  var deleteButtonId = "delete-sample-" + sampleId;
+  var saveButtonId = "save-sample-" + sampleId;
+  var removeButtonId = "remove-sample-" + sampleId;
+
+  var saved = '';
+  var filename = '';
+  if (isLoaded) {
+    saved = 'saved';
+    filename = fn;
+  }
+  var resultEl = '<div class="sample ' + saved + '" id="' + sampleDivId + '" data-filename="' + filename + '">';
+      resultEl += 'Sample #' + sampleId + ' ' + word;
+      resultEl += '<span><a id="' + playButtonId + '" href="#" class="fa fa-play"></a> <a id="' + deleteButtonId + '" href="#" class="fa fa-times"></a> <a id="' + saveButtonId + '" href="#" class="fa fa-floppy-o"></a> <a id="' + removeButtonId + '" href="#" class="fa fa-chain-broken"></a></span>';
+      resultEl += '</div>';
+
+  $("#training-samples").append(resultEl);
+
+  $('#' + playButtonId).on('click', function(e) {
+    e.preventDefault();
+    _KS.playTrainingBuffer(sampleId);
+  });
+
+  $('#' + deleteButtonId).on('click', function(e) {
+    e.preventDefault();
+    _KS.deleteTrainingBuffer(sampleId);
+    _KS.generateModel();
+    $('#' + sampleDivId).remove();
+  });
+
+  $('#' + saveButtonId).on('click', function(e) {
+    e.preventDefault();
+    var btn = $(this);
+    var buffer = _KS.getAudioBuffer(sampleId);
+    var name = "sample_" + word + "_" + sampleId;
+    var json = JSON.stringify(buffer);
+    $.ajax({
+        type: 'POST',
+        url: 'modules/KeywordSampleManager/saveSample.php',
+        data: {
+          'name': name,
+          'buffer': json
+        },
+        success: function (data) {
+          var result = JSON.parse(data);
+          if (result.success) {
+            $(document).trigger('response_speak', 'Próbka audio zapisana.');
+            $(btn).closest('.sample').removeClass('error');
+            $(btn).closest('.sample').removeClass('deleted');
+            $(btn).closest('.sample').addClass('saved');
+            $(btn).closest('.sample').attr('data-filename', result.payload.filename);
+          } else {
+            $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
+            $(btn).closest('.sample').addClass('error');
+          }
+        },
+        error: function (e) {
+          $(document).trigger('response_speak', 'Błąd zapisu próbki audio.');
+          $(btn).closest('.sample').addClass('error');
+        }
+    });
+  });
+
+  $('#' + removeButtonId).on('click', function(e) {
+    e.preventDefault();
+    var btn = $(this);
+    var name = $(btn).closest('.sample').attr('data-filename');
+    $.ajax({
+        type: 'POST',
+        url: 'modules/KeywordSampleManager/deleteSample.php',
+        data: {
+          'name': name
+        },
+        success: function (data) {
+          var result = JSON.parse(data);
+          if (result.success) {
+            $(document).trigger('response_speak', 'Próbka audio usunięta.');
+            $(btn).closest('.sample').removeClass('saved');
+            $(btn).closest('.sample').removeClass('error');
+            $(btn).closest('.sample').addClass('deleted');
+            $(btn).closest('.sample').attr('data-filename', '');
+          } else {
+            $(document).trigger('response_speak', 'Błąd usuwania próbki audio.');
+            $(btn).closest('.sample').addClass('error');
+          }
+        },
+        error: function (e) {
+          $(document).trigger('response_speak', 'Błąd usuwania próbki audio.');
+          $(btn).closest('.sample').addClass('error');
+        }
+    });
+  });
 }

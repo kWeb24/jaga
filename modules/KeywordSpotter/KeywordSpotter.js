@@ -77,7 +77,8 @@ KeywordSpotter.prototype.getAudioBuffer = function(id) {
   return this.SR.recordingBufferArray[id];
 };
 
-KeywordSpotter.prototype.addAudioSample = function(buf) {
+KeywordSpotter.prototype.addAudioSample = function(buf, word) {
   this.SR.recordingBufferArray.push(buf);
+  this.SR.wordBuffer.push(word);
   return this.SR.recordingBufferArray.length;
 };
