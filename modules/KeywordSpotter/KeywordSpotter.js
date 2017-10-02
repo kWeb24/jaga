@@ -77,8 +77,20 @@ KeywordSpotter.prototype.getAudioBuffer = function(id) {
   return this.SR.recordingBufferArray[id];
 };
 
-KeywordSpotter.prototype.addAudioSample = function(buf, word) {
+KeywordSpotter.prototype.getModel = function() {
+  return this.SR.model;
+};
+
+KeywordSpotter.prototype.getModelBuffer = function() {
+  return this.SR.modelBuffer;
+};
+
+KeywordSpotter.prototype.addAudioSample = function(buf, word, mbuf) {
+  var self = this;
   this.SR.recordingBufferArray.push(buf);
   this.SR.wordBuffer.push(word);
+  this.SR.modelBuffer = [];
+  this.SR.modelBuffer = mbuf;
+  this.SR.generateModel();
   return this.SR.recordingBufferArray.length;
 };

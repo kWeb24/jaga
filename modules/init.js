@@ -110,12 +110,13 @@ function initKSUtils(_KS) {
             var payload = result.payload.samples;
             var filenames = result.payload.filenames;
             $(payload).each(function(i, el) {
-              var buf = JSON.parse(el);
+              var res = JSON.parse(el);
+              var buf = res.audiobuffer;
+              var mbuf = res.modelbuffer;
               var fn = filenames[i].split('.')[0];
               var word = fn.split("_");
-              var sampleId = _KS.addAudioSample(buf, word[1]) - 1;
+              var sampleId = _KS.addAudioSample(buf, word[1], mbuf) - 1;
               addSampleItem(_KS, sampleId, word[1], true, fn);
-              _KS.generateModel();
             });
             $(document).trigger('response_speak', 'Próbki audio załadowane.');
           } else if (result.error.code == 204) {
@@ -214,7 +215,11 @@ function addSampleItem(_KS, sampleId, word, isLoaded, fn) {
     var btn = $(this);
     var buffer = _KS.getAudioBuffer(sampleId);
     var name = "sample_" + word + "_" + sampleId;
-    var json = JSON.stringify(buffer);
+    var bufferData = {
+      "audiobuffer": buffer,
+      "modelbuffer": _KS.getModelBuffer(),
+    };
+    var json = JSON.stringify(bufferData);
     $.ajax({
         type: 'POST',
         url: 'modules/KeywordSampleManager/saveSample.php',
