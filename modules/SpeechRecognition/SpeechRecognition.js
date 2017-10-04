@@ -4,6 +4,7 @@ SpeechRecognition = function() {
   this.ignore_onend = null;
   this.start_timestamp = null;
   this.recognition = null;
+  this.lastInput = null;
 
   if (!('webkitSpeechRecognition' in window)) {
     $(document).trigger('srmessage', ['info_upgrade']);
@@ -73,7 +74,20 @@ SpeechRecognition.prototype.init = function() {
     }
     self.final_transcript = self.capitalize(self.final_transcript);
     $('#interim_span').html(self.lineBreak(interim_transcript));
+
+    self.lastInput = new Date();
   };
+
+  setInterval(function() {
+    if (self.lastInput !== null) {
+      var date = new Date();
+      var diff = self.lastInput - date;
+      if (diff < -1500) {
+        self.lastInput = null;
+        self.stop();
+      }
+    }
+  }, 1500);
 };
 
 SpeechRecognition.prototype.lineBreak = function(s) {
@@ -87,7 +101,15 @@ SpeechRecognition.prototype.capitalize = function(s) {
   return s.replace(first_char, function(m) { return m.toUpperCase(); });
 };
 
-SpeechRecognition.prototype.start = function(e) {
+SpeechRecognition.prototype.stop = function() {
+  if (this.recognizing) {
+    this.recognition.stop();
+    $(document).trigger('status', 'waiting');
+    return;
+  }
+};
+
+SpeechRecognition.prototype.start = function() {
   if (this.recognizing) {
     this.recognition.stop();
     $(document).trigger('status', 'waiting');
@@ -98,7 +120,7 @@ SpeechRecognition.prototype.start = function(e) {
   this.recognition.lang = 'pl-PL';
   this.recognition.start();
   this.ignore_onend = false;
-  this.start_timestamp = event.timeStamp;
+  this.start_timestamp = Date.now();
   $('#interim_span').html('');
   $(document).trigger('srmessage', ['info_allow']);
 };
