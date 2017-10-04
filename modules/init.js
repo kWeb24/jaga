@@ -2,11 +2,10 @@ $(document).ready(function() {
   initAnimations();
   initSREvents();
   var _SR = initSpeechRecognition();
-  initSRUtils(_SR);
   var _SS = initSpeechSynthesis();
   initSSUtils(_SS);
   var _KS = initKeywordSpotting();
-  initKSUtils(_KS);
+  initKSUtils(_KS, _SR);
 });
 
 function initAnimations() {
@@ -64,12 +63,6 @@ function initSREvents() {
   });
 }
 
-function initSRUtils(_SR) {
-  $('.microphone img').on('click', function(e) {
-    _SR.start(e);
-  });
-}
-
 function initSSUtils(_SS) {
   $(document).on('response_speak', function(e, msg) {
       _SS.speak(msg);
@@ -97,7 +90,7 @@ function requestCleverbot(input) {
   });
 }
 
-function initKSUtils(_KS) {
+function initKSUtils(_KS, _SR) {
   _KS.listen();
 
   $.ajax({
@@ -118,6 +111,7 @@ function initKSUtils(_KS) {
               var sampleId = _KS.addAudioSample(buf, word[1], mbuf) - 1;
               addSampleItem(_KS, sampleId, word[1], true, fn);
             });
+            _KS.startSpotting();
             $(document).trigger('response_speak', 'Próbki audio załadowane.');
           } else if (result.error.code == 204) {
             $(document).trigger('response_speak', 'Brak próbek audio.');
@@ -172,7 +166,7 @@ function initKSUtils(_KS) {
   });
 
   var updateKeywordSpotting = function(result) {
-    console.log(result);
+    _SR.start();
   };
 
   _KS.setCallback(updateKeywordSpotting);
