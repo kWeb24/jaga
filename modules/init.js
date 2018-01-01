@@ -6,6 +6,7 @@ $(document).ready(function() {
   initSSUtils(_SS);
   var _KS = initKeywordSpotting();
   initKSUtils(_KS, _SR);
+  var _OWM = initOpenWeatherMap();
 });
 
 function initAnimations() {
@@ -38,6 +39,10 @@ function initSpeechSynthesis() {
 
 function initKeywordSpotting() {
   return new KeywordSpotter();
+}
+
+function initOpenWeatherMap() {
+  return new OpenWeatherMap();
 }
 
 function initSREvents() {
