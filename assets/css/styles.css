@@ -84,7 +84,7 @@ a:hover {
   text-decoration: none;
 }
 
-::-webkit-scrollbar { width: 12px; }
+/* ::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track {
   -webkit-border-radius: 10px; border-radius: 10px;
 }
@@ -95,9 +95,9 @@ a:hover {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: #27ae60;
-}
+} */
 
-input[type=range] {
+/* input[type=range] {
   -webkit-appearance: none;
   margin: 18px 0;
   width: 100%;
@@ -122,6 +122,14 @@ input[type=range]::-webkit-slider-thumb {
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #fff;
+} */
+
+.app {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .clearfix {
@@ -129,14 +137,16 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .wrapper {
-  padding: 0 30px;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .kv {
   width: 100%;
   float: left;
   text-align: center;
-  margin-top: 60px;
 }
 
 .kv img {
@@ -147,10 +157,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .kv .status {
-  margin-top: 15px;
   width: 100%;
   float: left;
   height: 70px;
+  margin-top: 15px;
 }
 
 .kv .status .status-inner {
@@ -188,7 +198,9 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .result-box {
   width: 100%;
   float: left;
-  margin-top: 30px;
+  margin-top: 0px;
+  position: absolute;
+  bottom: 15px;
 }
 
 .result-box .result-box-inner {
@@ -196,16 +208,14 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   width: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: solid 1px #2ecc71;
-  border-radius: 15px;
-  height: 350px;
+  height: 100px;
 }
 
 .result-box .result-box-inner .convo {
   padding: 15px;
-  overflow-y: scroll;
+  overflow: hidden;
   width: 100%;
-  height: 350px;
+  height: 100px;
   float: left;
 }
 
@@ -227,32 +237,31 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .result-box .copy .inner .interim {
   color: #1abc9c;
-  font-family: 'hind_light', sans-serif;
+  font-family: 'hind_medium', sans-serif;
 }
 
 .result-box .result-box-inner .convo p {
   width: 100%;
   float: left;
-  font-family: 'hind_light', sans-serif;
+  font-family: 'hind_medium', sans-serif;
   padding: 5px 15px;
   margin: 0;
   border-radius: 15px;
-  margin: 15px 0;
+  margin: 0;
   font-size: 13px;
+  text-align: center;
 }
 
 .result-box .result-box-inner .convo p span {
   font-family: 'hind_medium', sans-serif;
-  color: #2ecc71;
 }
 
 .result-box .result-box-inner .convo .me {
-  color: rgba(255,255,255,0.9);
-  background: #34495e;
+  color: #252445;
 }
 
 .result-box .result-box-inner .convo .res {
-  color: rgba(255,255,255,0.7);
+  color: #252445;
   margin: 0;
 }
 
