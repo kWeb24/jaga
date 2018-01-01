@@ -233,11 +233,12 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   padding: 0 30px;
   margin-top: 0px;
   width: 100%;
+  text-align: center;
 }
 
 .result-box .copy .inner .interim {
-  color: #1abc9c;
-  font-family: 'hind_medium', sans-serif;
+  color: #252445;
+  font-family: 'hind_medium', sans-serif;  
 }
 
 .result-box .result-box-inner .convo p {
