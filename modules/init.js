@@ -52,13 +52,13 @@ function initSREvents() {
   });
 
   $(document).on('transcript_finished', function(e, msg) {
-    $('#convo-box').append('<p class="me"><span>Ja: </span><br />' + msg + '</p>');
+    $('#convo-box').append('<p class="me"><span>Ja: </span>' + msg + '</p>');
     $("#convo-box").animate({ scrollTop: $('#convo-box').prop("scrollHeight")}, 100);
     requestCleverbot(msg);
   });
 
   $(document).on('response_ready', function(e, msg) {
-    $('#convo-box').append('<p class="res"><span>Jaga: </span><br />' + msg + '</p>');
+    $('#convo-box').append('<p class="res"><span>Jaga: </span>' + msg + '</p>');
     $("#convo-box").animate({ scrollTop: $('#convo-box').prop("scrollHeight")}, 100);
   });
 }
