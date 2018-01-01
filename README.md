@@ -6,5 +6,6 @@ Javascript based voice assistant (WIP)
 - [x] Voice Synthesis
 - [x] Voice Cleverbot interactions (when Cleverbot API key provided)
 - [ ] **WIP** Offline keyword spotting with training ability
+- [ ] **WIP** OpenWeather API integration
 
-Does not work locally. If you want to test it, just put in on some server. Laragon would be good. 
+Does not work locally. If you want to test it, just put in on some server. Laragon would be good.
