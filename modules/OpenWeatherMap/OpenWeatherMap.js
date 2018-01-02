@@ -12,8 +12,11 @@ OpenWeatherMap.prototype.init = function() {
 	this.getCityWeather("Bojanowo");
 	this.getCityForecast("Bojanowo");
 	this.setCurrentTimeFromSystem();
-  // setInterval(function() {
-  // }, 1500);
+
+	$('.current-time-clock').html(self.getCurrentTimeFromSystem());
+  setInterval(function() {
+		$('.current-time-clock').html(self.getCurrentTimeFromSystem());
+  }, 1000);
 };
 
 OpenWeatherMap.prototype.getCityWeather = function(city) {
@@ -52,7 +55,11 @@ OpenWeatherMap.prototype.getCityForecast = function(city) {
 
 OpenWeatherMap.prototype.setCurrentTimeFromSystem = function() {
 	moment.locale('pl');
-	var dateElements = $('.slide__element--date');
+	var dateElements = $('.current-time-text');
 	var currentDate = moment().format('dddd[<br />]D MMMM YYYY');
 	$(dateElements).html(currentDate);
+};
+
+OpenWeatherMap.prototype.getCurrentTimeFromSystem = function() {
+	return moment().format('hh:mm[<small>]:ss[</small>]');
 };
