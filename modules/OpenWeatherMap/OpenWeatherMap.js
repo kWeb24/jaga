@@ -56,7 +56,7 @@ OpenWeatherMap.prototype.getCityForecast = function(city) {
 OpenWeatherMap.prototype.setCurrentTimeFromSystem = function() {
 	moment.locale('pl');
 	var dateElements = $('.current-time-text');
-	var currentDate = moment().format('dddd[<br />]D MMMM YYYY');
+	var currentDate = moment().format('dddd[, ]D MMMM YYYY');
 	$(dateElements).html(currentDate);
 };
 
