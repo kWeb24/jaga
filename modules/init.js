@@ -47,8 +47,6 @@ function initOpenWeatherMap() {
 
 function initSREvents() {
   $(document).on('srmessage', function(e, type) {
-    $('#info p').removeClass('visible');
-    $('#' + type).addClass('visible');
   });
 
   $(document).on('status', function(e, type) {
