@@ -29,37 +29,44 @@
     		<div class="slideshow">
     			<canvas width="1" height="1" id="container" style="position:absolute"></canvas>
     			<!-- Heavy Rain -->
-    			<div class="slide" id="slide-1" data-weather="rain">
-    				<div class="slide__element slide__element--date"></div>
-    				<div class="slide__element slide__element--temp">12°<small>C</small></div>
-    			</div>
-    			<!-- Drizzle -->
-    			<div class="slide" id="slide-2" data-weather="drizzle">
-    				<div class="slide__element slide__element--date"></div>
-    				<div class="slide__element slide__element--temp">18°<small>C</small></div>
-    			</div>
-    			<!-- Sunny -->
-    			<div class="slide" id="slide-3" data-weather="sunny">
-    				<div class="slide__element slide__element--date"></div>
-    				<div class="slide__element slide__element--temp">25°<small>C</small></div>
-    			</div>
-    			<!-- Heavy rain -->
-    			<div class="slide" id="slide-5" data-weather="storm">
-    				<div class="slide__element slide__element--date"></div>
-    				<div class="slide__element slide__element--temp">20°<small>C</small></div>
-    			</div>
-    			<!-- Fallout (greenish overlay with slightly greenish/yellowish drops) -->
-    			<div class="slide" id="slide-4" data-weather="fallout">
-    				<div class="slide__element slide__element--date"></div>
-    				<div class="slide__element slide__element--temp">34°<small>C</small></div>
-    			</div>
-    			<nav class="slideshow__nav">
-    				<a class="nav-item" href="#slide-1"><i class="icon icon--rainy"></i><span>10/24</span></a>
-    				<a class="nav-item" href="#slide-2"><i class="icon icon--drizzle"></i><span>10/25</span></a>
-    				<a class="nav-item" href="#slide-3"><i class="icon icon--sun"></i><span>10/26</span></a>
-    				<a class="nav-item" href="#slide-5"><i class="icon icon--storm"></i><span>10/28</span></a>
-    				<a class="nav-item" href="#slide-4"><i class="icon icon--radioactive"></i><span>10/27</span></a>
-    			</nav>
+          <div class="current-time-widget">
+            <div class="current-time-text"></div>
+            <div class="current-time-clock"></div>
+          </div>
+
+          <div class="forecast-widget">
+            <div class="slide" id="slide-1" data-weather="rain">
+              <div class="slide__element slide__element--date"></div>
+              <div class="slide__element slide__element--temp">12°<small>C</small></div>
+            </div>
+            <!-- Drizzle -->
+            <div class="slide" id="slide-2" data-weather="drizzle">
+              <div class="slide__element slide__element--date"></div>
+              <div class="slide__element slide__element--temp">18°<small>C</small></div>
+            </div>
+            <!-- Sunny -->
+            <div class="slide" id="slide-3" data-weather="sunny">
+              <div class="slide__element slide__element--date"></div>
+              <div class="slide__element slide__element--temp">25°<small>C</small></div>
+            </div>
+            <!-- Heavy rain -->
+            <div class="slide" id="slide-5" data-weather="storm">
+              <div class="slide__element slide__element--date"></div>
+              <div class="slide__element slide__element--temp">20°<small>C</small></div>
+            </div>
+            <!-- Fallout (greenish overlay with slightly greenish/yellowish drops) -->
+            <div class="slide" id="slide-4" data-weather="fallout">
+              <div class="slide__element slide__element--date"></div>
+              <div class="slide__element slide__element--temp">34°<small>C</small></div>
+            </div>
+            <nav class="slideshow__nav">
+              <a class="nav-item" href="#slide-1"><i class="icon icon--rainy"></i><span>10/24<br />20°<small>C</small></span></a>
+              <a class="nav-item" href="#slide-2"><i class="icon icon--drizzle"></i><span>10/24<br />20°<small>C</small></span></a>
+              <a class="nav-item" href="#slide-3"><i class="icon icon--sun"></i><span>10/24<br />20°<small>C</small></span></a>
+              <a class="nav-item" href="#slide-5"><i class="icon icon--storm"></i><span>10/24<br />20°<small>C</small></span></a>
+              <a class="nav-item" href="#slide-4"><i class="icon icon--radioactive"></i><span>10/24<br />20°<small>C</small></span></a>
+            </nav>
+          </div>
     		</div>
     	</div>
     </div>
@@ -92,8 +99,8 @@
 
         </div>
         <div class="confidence-settings">
-            <label for="fader">Confidence Threshold (<span id="confidenceThresholdOutput">.55</span>)</label>
-            <input type="range" min="0" max="1" value=".55" step=".05" id="confidenceThreshold" />
+          <label for="fader">Confidence Threshold (<span id="confidenceThresholdOutput">.55</span>)</label>
+          <input type="range" min="0" max="1" value=".55" step=".05" id="confidenceThreshold" />
         </div>
         <div class="training-form">
           Word: <input id="currentWord" type="text" value="" />
@@ -119,16 +126,6 @@
 
               </div>
             </div>
-          </div>
-          <div class="info" id="info" style="display: none;">
-            <p id="info_start">Gotowa</p>
-            <p id="info_speak_now">Słucham</p>
-            <p id="info_no_speech">Nie  słyszę Cię</p>
-            <p id="info_no_microphone">Nie znaleziono mikrofonu</p>
-            <p id="info_allow">Kliknij przycisk 'Allow' aby odblokować mikrofon</p>
-            <p id="info_denied">Brak zgody na użycie mikrofonu</p>
-            <p id="info_blocked">Mikrofon zablokowany</p>
-            <p id="info_upgrade">Brak wsparcia ze strony przeglądarki</p>
           </div>
         </div>
         <div class="result-box">
