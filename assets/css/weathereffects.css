@@ -163,6 +163,32 @@
 	margin: 0 0 1em;
 }
 
+/* current time */
+
+.current-time-widget {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 999;
+	color: #252445;
+	font-weight: 700;
+	font-family: "Roboto", sans-serif;
+	text-align: center;
+}
+
+.current-time-text {
+	font-size: 28px;
+}
+
+.current-time-clock {
+	font-size: 96px;
+}
+
+.current-time-clock small {
+	font-size: 48px;
+}
+
 @media screen and (max-height: 39em) {
 	.slideshow {
 		font-size: 75%;
