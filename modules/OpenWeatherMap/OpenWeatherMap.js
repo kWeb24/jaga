@@ -43,7 +43,7 @@ OpenWeatherMap.prototype.getCityForecast = function(city) {
 		},
 		success: function(result, status, xhr) {
 			var forecast = result;
-			console.log(weather);
+			console.log(forecast);
 		},
 		error: function(xhr, status, error) {
 		}
